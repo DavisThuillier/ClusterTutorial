@@ -1,15 +1,20 @@
 #!/bin/bash
 
-#SBATCH --job-name=test_array   ## name of the job.
-#SBATCH -A [ACCOUNT NAME]       ## account to charge
-#SBATCH -p free                 ## partition/queue name (use "free" for the tutorial)
-#SBATCH --error=error_%A_%a.txt ## error log file name: %A is job id, %a is array task id
-#SBATCH --output=out_%A_%a.txt  ## output filename
-#SBATCH --nodes=1               ## number of nodes the job will use 
-#SBATCH --ntasks=1              ## number of processes to launch for each array iteration
-#SBATCH --cpus-per-task=1       ## number of cores the job needs
-#SBATCH --time=1:00:00          ## time limit for each array task
-#SBATCH --array=1-[N]           ## number of array tasks is 100 and
-                                ## $SLURM_ARRAY_TASK_ID takes values from 1 to 100 inclusive
+#SBATCH --job-name=test_array        ## name of the job.
+#SBATCH -A [ACCOUNT NAME]            ## account to charge
+#SBATCH -p free                      ## partition/queue name (use "free" for the tutorial)
+#SBATCH --error=logs/error_%A_%a.txt ## error log file name: %A is job id, %a is array task id
+#SBATCH --output=logs/out_%A_%a.txt  ## output filename
+#SBATCH --nodes=1                    ## number of nodes the job will use 
+#SBATCH --ntasks=1                   ## number of processes to launch for each array iteration
+#SBATCH --cpus-per-task=1            ## number of cores the job needs
+#SBATCH --time=1:00:00               ## time limit for each array task
+#SBATCH --array=1-[N]                
 
-echo haiku_$SLURM_ARRAY_TASK_ID.txt
+# inputs.txt stores arguments for each task as a separate line
+INPUT=/inputs.txt
+
+# Grab the arguments from the relevant line, indexed from 1
+Args=$(awk "NR==$SLURM_ARRAY_TASK_ID" $INPUT)
+
+sum.sh $ARGS # Run program with given arguments

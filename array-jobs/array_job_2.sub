@@ -8,14 +8,8 @@
 #SBATCH --nodes=1               ## number of nodes the job will use 
 #SBATCH --ntasks=1              ## number of processes to launch for each array iteration
 #SBATCH --cpus-per-task=1       ## number of cores the job needs
-#SBATCH --time=1:00:00          ## time limit for each array task
+#SBATCH --time=0:02:00          ## time limit for each array task
 #SBATCH --array=1-[N]           ## number of array tasks is 100 and
                                 ## $SLURM_ARRAY_TASK_ID takes values from 1 to 100 inclusive
 
-# inputs.txt stores arguments for each task as a separate line
-INPUT=/inputs.txt
-
-# Grab the arguments from the relevant line, indexed from 1
-Args=$(awk "NR==$SLURM_ARRAY_TASK_ID" $INPUT)
-
-sum.sh $ARGS # Run program with given arguments
+cat haiku_$SLURM_ARRAY_TASK_ID.txt
