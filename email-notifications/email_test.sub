@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#SBATCH -J Email_Test
+#SBATCH -p free
+#SBATCH --error=/pub/dthuilli/logs/%A_%a.err
+#SBATCH --output=/pub/dthuilli/logs/%A_%a.out
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --array=1-2
+#SBATCH --mail-type=END
+#SBATCH --mail-user=dthuilli@uci.edu
+#SBATCH -A DTHUILLI
+
+secs_to_human(){
+    echo "$(( ${1} / 3600 )):$(( (${1} / 60) % 60 )):$(( ${1} % 60 ))"
+}
+start=$(date)
+
+echo "${SLURM_ARRAY_TASK_ID}"
+echo "Test error message" >&2
+
+finish=$(date)
+
+array_ID=${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}
+outfile=/pub/dthuilli/logs/${array_ID}.out
+errfile=/pub/dthuilli/logs/${array_ID}.err
+
+message_file=$(mktemp)
+echo "**Job Report**" >> $message_file
+echo "Started: $start" >> $message_file
+echo "Finished: $finish" >> $message_file
+echo "Duration: $(secs_to_human $(($(date -d "$finish" +%s) - $(date -d "$start" +%s))))" >> $message_file
+echo "Error" >> $message_file
+echo "---------------------" >> $message_file
+cat $errfile >> $message_file
+echo "....................." >> $message_file
+echo "Output" >> $message_file
+echo "---------------------" >> $message_file
+cat $outfile >> $message_file
+
+cat $message_file | mail -s "SLURM $SLURM_JOB_NAME task $SLURM_ARRAY_TASK_ID has ended" dthuilli@uci.edu
+rm $message_file # Clean up temp file
+
