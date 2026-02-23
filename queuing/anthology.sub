@@ -3,12 +3,18 @@
 #SBATCH --job-name=haiku        
 #SBATCH -A [ACCOUNT NAME]       
 #SBATCH -p free                 
-#SBATCH --error=logs/error_%A_%a.txt 
-#SBATCH --output=logs/out_%A_%a.txt  
 #SBATCH --nodes=1               
 #SBATCH --ntasks=1              
 #SBATCH --cpus-per-task=1       
 #SBATCH --time=0:02:00          
-#SBATCH --array=1-2           
 
-cat ../haikus/haiku_$SLURM_ARRAY_TASK_ID.txt
+dir="selected_haikus"
+outfile="anthology.txt"
+
+# Loop through regular files only
+for file in "$dir"/*; do
+    if [ -f "$file" ]; then
+        cat "$file" >> "$outfile"
+        echo >> "$outfile"   # add separating newline
+    fi
+done

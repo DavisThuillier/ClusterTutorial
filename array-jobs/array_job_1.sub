@@ -17,4 +17,4 @@ INPUT=./inputs.txt
 # Grab the arguments from the relevant line, indexed from 1
 Args=$(awk "NR==$SLURM_ARRAY_TASK_ID" $INPUT)
 
-sum.sh $ARGS # Run program with given arguments
+./sum.sh $Args # Run program with given arguments

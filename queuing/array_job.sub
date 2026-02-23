@@ -3,8 +3,7 @@
 #SBATCH --job-name=haiku        
 #SBATCH -A [ACCOUNT NAME]       
 #SBATCH -p free                 
-#SBATCH --error=logs/error_%A_%a.txt 
-#SBATCH --output=logs/out_%A_%a.txt  
+#SBATCH --output=selected_haikus/$A_$a.txt
 #SBATCH --nodes=1               
 #SBATCH --ntasks=1              
 #SBATCH --cpus-per-task=1       
