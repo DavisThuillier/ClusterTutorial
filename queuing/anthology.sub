@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=haiku        
+#SBATCH --job-name=build_anthology       
 #SBATCH -A [ACCOUNT NAME]       
 #SBATCH -p free                 
 #SBATCH --nodes=1               
@@ -9,12 +9,18 @@
 #SBATCH --time=0:02:00          
 
 dir="selected_haikus"
-outfile="anthology.txt"
+outfile="haiku_anthology.txt"
 
-# Loop through regular files only
+first=1
+
 for file in "$dir"/*; do
     if [ -f "$file" ]; then
+        # Add blank line BEFORE every file except the first
+        if [ $first -eq 0 ]; then
+            printf "\n\n" >> "$outfile"
+        fi
+
         cat "$file" >> "$outfile"
-        echo >> "$outfile"   # add separating newline
+        first=0
     fi
 done
