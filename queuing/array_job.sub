@@ -13,5 +13,3 @@
 
 file="haiku_$SLURM_ARRAY_TASK_ID.txt"
 cp ../haikus/$file selected_haikus/$file
-
-cat "\n" >> $file

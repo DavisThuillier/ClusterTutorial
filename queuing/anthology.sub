@@ -2,7 +2,9 @@
 
 #SBATCH --job-name=build_anthology       
 #SBATCH -A [ACCOUNT NAME]       
-#SBATCH -p free                 
+#SBATCH -p free      
+#SBATCH --error=logs/error_%x.txt 
+#SBATCH --output=logs/out_%x.txt             
 #SBATCH --nodes=1               
 #SBATCH --ntasks=1              
 #SBATCH --cpus-per-task=1       
@@ -11,16 +13,6 @@
 dir="selected_haikus"
 outfile="haiku_anthology.txt"
 
-first=1
+: > outfile
 
-for file in "$dir"/*; do
-    if [ -f "$file" ]; then
-        # Add blank line BEFORE every file except the first
-        if [ $first -eq 0 ]; then
-            printf "\n\n" >> "$outfile"
-        fi
-
-        cat "$file" >> "$outfile"
-        first=0
-    fi
-done
+cat $dir/* >> $outfile
