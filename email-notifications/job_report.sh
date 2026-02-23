@@ -4,8 +4,8 @@
 finish=$(date) # Get the time the job report is requested
 
 array_ID=${SLURM_JOB_NAME}_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}
-outfile=/pub/dthuilli/logs/${array_ID}.out
-errfile=/pub/dthuilli/logs/${array_ID}.err
+outfile=/logs/${array_ID}.out
+errfile=/logs/${array_ID}.err
 
 message_file=$(mktemp) # Create message in temporary file
 
@@ -21,6 +21,7 @@ echo "Output Log" >> $message_file
 echo "---------------------" >> $message_file
 head $outfile >> $message_file
 
-cat $message_file | mail -s "SLURM $SLURM_JOB_NAME task $SLURM_ARRAY_TASK_ID has ended" dthuilli@uci.edu
+EMAIL_ADDRESS=panteater@uci.edu
+cat $message_file | mail -s "SLURM $SLURM_JOB_NAME task $SLURM_ARRAY_TASK_ID has ended" $EMAIL_ADDRESS
 rm $message_file # Clear temp file
 

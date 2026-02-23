@@ -2,8 +2,8 @@
 
 #SBATCH -J Email_Test
 #SBATCH -p free
-#SBATCH --error=/path/to/logs/%A_%a.err
-#SBATCH --output=/path/to/logs/%A_%a.out
+#SBATCH --error=/logs/%x_%A_%a.err
+#SBATCH --output=/logs/%x_%A_%a.out
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
@@ -12,15 +12,11 @@
 #SBATCH --mail-user=panteater@uci.edu
 #SBATCH -A [INSERT NAME]
 
+# Start a timer here
 source ./start_timer.sh
 
-echo "${SLURM_ARRAY_TASK_ID}"
+echo "Array number ${SLURM_ARRAY_TASK_ID}"
 echo "Test error message" >&2
 
-finish=$(date)
-
-array_ID=${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}
-outfile=/pub/dthuilli/logs/${array_ID}.out
-errfile=/pub/dthuilli/logs/${array_ID}.err
-
+# Finish the timer here and send an email job report!
 source ./job_report.sh
