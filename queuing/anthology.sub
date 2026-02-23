@@ -1,19 +1,19 @@
 #!/bin/bash
 
-#SBATCH --job-name=build_anthology       
-#SBATCH -A [ACCOUNT NAME]       
-#SBATCH -p free      
-#SBATCH --error=logs/error_%x.txt 
-#SBATCH --output=logs/out_%x.txt             
-#SBATCH --nodes=1               
-#SBATCH --ntasks=1              
-#SBATCH --cpus-per-task=1       
-#SBATCH --time=0:02:00          
+#SBATCH --job-name=build_anthology
+#SBATCH -A [ACCOUNT NAME]
+#SBATCH -p free
+#SBATCH --error=logs/error_%x.txt
+#SBATCH --output=logs/out_%x.txt
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --time=0:02:00
 
 dir="selected_haikus"
 outfile="haiku_anthology.txt"
 
-: > $outfile
+printf "A Selection of Haikus\n\n" > $outfile
 
 files=($dir/*)
-awk 'NR>1 && FNR==1 { print "" } { print }' "${files[@]}"  > $outfile
+awk 'NR>1 && FNR==1 { print "" } { print }' "${files[@]}"  >> $outfile
