@@ -12,7 +12,7 @@
 #SBATCH --array=1-[N]                
 
 # inputs.txt stores arguments for each task as a separate line
-INPUT=/inputs.txt
+INPUT=./inputs.txt
 
 # Grab the arguments from the relevant line, indexed from 1
 Args=$(awk "NR==$SLURM_ARRAY_TASK_ID" $INPUT)

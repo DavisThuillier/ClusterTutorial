@@ -40,3 +40,22 @@ will start 5 separate tasks, each of which runs the body of the rest of the job 
     /path/to/second_input/.txt
     ```
 
+[array_job_1.sub](./array_job_1.sub) is an example of the second paradigm. 
+```
+INPUT=/inputs.txt
+Args=$(awk "NR==$SLURM_ARRAY_TASK_ID" $INPUT)
+```
+In the first line, we specify a file, "inputs.txt" which contains the arguments we later want to pass to our function. The second line uses ``awk`` to grab the line corresponding to line number ``SLURM_ARRAY_TASK_ID`` from the file.
+
+Once we have the arguments, we can pass the arguments to the program.
+```
+sum.sh $ARGS # Run program with given arguments
+```
+
+Before submitting the batch job, be sure to update the example to include
+* your username 
+* the correct number of lines of the input file (use ``wc -l``)
+
+After submission, you should see a new ``logs`` directory which contains output and error files. Read these files to validate that ``sum.sh`` computed the sum of its inputs.
+
+In [array_job_2.sub](./array_job_2.sub), we see an example of the second paradigm, where ``SLURM_ARRAY_TASK_ID`` is used to reference individual files for as input. Submit the job and read the output files in ``logs``.
