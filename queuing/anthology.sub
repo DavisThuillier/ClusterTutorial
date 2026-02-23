@@ -13,6 +13,8 @@
 dir="selected_haikus"
 outfile="haiku_anthology.txt"
 
-: > outfile
+: > $outfile
 
-cat $dir/* >> $outfile
+for file in "$dir"/*; do
+    awk 'FNR==1 && NR!=1 {print ""} 1' $file >> $outfile
+done

@@ -24,4 +24,3 @@ head $outfile >> $message_file
 EMAIL_ADDRESS=panteater@uci.edu
 cat $message_file | mail -s "SLURM $SLURM_JOB_NAME task $SLURM_ARRAY_TASK_ID has ended" $EMAIL_ADDRESS
 rm $message_file # Clear temp file
-

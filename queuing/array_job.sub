@@ -11,5 +11,10 @@
 #SBATCH --time=0:02:00          
 #SBATCH --array=1-2           
 
+dir=./selected_haikus 
 file="haiku_$SLURM_ARRAY_TASK_ID.txt"
-cp ../haikus/$file selected_haikus/$file
+
+mkdir -p $dir
+
+
+cat ../haikus/$file > ./selected_haikus/$file
